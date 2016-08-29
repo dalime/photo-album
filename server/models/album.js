@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
-const personSchema = new mongoose.Schema({
+const albumSchema = new mongoose.Schema({
   name: {type: String, required: true},
-  email: {type: String}
+  photos: [{type: mongoose.Schema.Types.ObjectId, ref: 'Album'}]
 });
 
-const Person = mongoose.model('Person', personSchema);
+const Album = mongoose.model('Album', albumSchema);
 
-module.exports = Person;
+module.exports = Album;

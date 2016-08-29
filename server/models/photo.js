@@ -1,25 +1,10 @@
 const mongoose = require('mongoose');
 
-const animalSchema = new mongoose.Schema({
-  name: {type: String, required: true},
-  type: {type: String, required: true},
-  age: {type: Number, required: true, min: 0},
-  gender: {type: String, required: true, default: "female"},
-  picture: {type: String},
-  owner: {type: mongoose.Schema.Types.ObjectId, ref: 'Person'}
+const photoSchema = new mongoose.Schema({
+  url: {type: String, required: true},
+  createdAt: {type: Date, required: true, default: Date.now}
 });
 
-animalSchema.statics.findAnimals = function(cb) {
-  this
-    .find({})
-    .sort('name')
-    .limit(5)
-    .exec((err, animals) => {
-      if (err) return cb(err);
-      else cb(err, animals);
-    })
-}
+const Photo = mongoose.model('Photo', photoSchema);
 
-const Animal = mongoose.model('Animal', animalSchema);
-
-module.exports = Animal;
+module.exports = Photo;

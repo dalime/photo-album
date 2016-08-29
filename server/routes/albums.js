@@ -1,46 +1,58 @@
 const express = require('express');
 const router = express.Router();
 
-const Person = require('../models/album');
-
-// /api/people
+const Album = require('../models/album');
 
 router.route('/')
   .get((req, res) => {
-    Person.find({}, (err, people) => {
-      res.status(err ? 400: 200).send(err || people);
+    Album.find({}, (err, albums) => {
+      res.status(err ? 400: 200).send(err || albums);
     })
   })
   .post((req, res) => {
-    Person.create(req.body, (err, person) => {
-      res.status(err ? 400: 200).send(err || person);
+    Album.create(req.body, (err, album) => {
+      res.status(err ? 400: 200).send(err || album);
     })
   });
 
-router.get('/:personId', (req, res) => {
-  Person.findById(req.params.personId, (err, person) => {
-    if (err || !person) {
-      return res.status(400).send(err || 'Person was not found.');
+router.get('/:id', (req, res) => {
+  Album.findById(req.params.id, (err, album) => {
+    if (err || !album) {
+      return res.status(400).send(err || 'Album was not found.');
     }
-    res.send(person);
+    res.send(album);
   })
 })
 
-router.delete('/:personId', (req, res) => {
-  Person.findByIdAndRemove(req.params.personId, (err, person) => {
-    if (err || !person) {
-      return res.status(400).send(err || 'Person was not deleted.');
+router.delete('/:id', (req, res) => {
+  Album.findByIdAndRemove(req.params.id, (err, album) => {
+    if (err || !album) {
+      return res.status(400).send(err || 'Album was not deleted.');
     }
-    res.send(person);
+    res.send(album);
   })
 })
 
-router.put('/:personId', (req, res) => {
-  Person.findByIdAndUpdate(req.params.personId, {$set: req.body}, {new: true}, (err, person) => {
-    if (err || !person) {
-      return res.status(400).send(err || 'Person was not updated.');
+router.put('/:id', (req, res) => {
+  Album.findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true}, (err, album) => {
+    if (err || !album) {
+      return res.status(400).send(err || 'Album was not updated.');
     }
-    res.send(person);
+    res.send(album);
+  })
+})
+
+router.put('/:albumId/addPhoto/:photoId', (req, res) => {
+  Album.findById(req.params.albumId, (err, album) => {
+    if (err || !album) {
+      return res.status(400).send(err || 'Album not found.');
+    }
+
+    let photoId = req.params.photoId
+    album.photos.push(photoId);
+    album.save((err, savedAlbum) => {
+      res.status(err ? 400: 200).send(err || savedAlbum);
+    })
   })
 })
 
