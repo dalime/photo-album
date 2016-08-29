@@ -1,5 +1,5 @@
 {
-  "name": "test4",
+  "name": "photo-album",
   "version": "1.0.0",
   "description": "",
   "main": "server/app.js",

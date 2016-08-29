@@ -18,10 +18,10 @@ router.route('/')
 router.get('/:id', (req, res) => {
   Album.findById(req.params.id, (err, album) => {
     if (err || !album) {
-      return res.status(400).send(err || 'Album was not found.');
+      return res.status(400).send(err || 'Album not found.');
     }
     res.send(album);
-  })
+  }).populate('photos')
 })
 
 router.delete('/:id', (req, res) => {
