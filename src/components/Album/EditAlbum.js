@@ -34,7 +34,6 @@ export default class EditAlbum extends Component {
   _editAlbum(e) {
     e.preventDefault()
     UserActions.editAlbum(this.props.id, this.state.name);
-    this.setState({name: ''});
     this.closeModal();
   }
 
@@ -47,7 +46,7 @@ export default class EditAlbum extends Component {
           <Modal.Title>Edit Album</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <label>New Name: <input type="text" onChange={this.onInputChange}/></label>
+            <label>New Name: <input type="text" onChange={this._onInputChange}/></label>
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this._editAlbum}>Edit</Button>

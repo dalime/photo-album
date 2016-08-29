@@ -39,6 +39,8 @@ class AlbumStore extends EventEmitter {
             return album;
           })
           _albums = editAlbums;
+          _albumName = action.album.name;
+          _photos = action.albums.photos;
           this.emit('CHANGE');
           break;
       }

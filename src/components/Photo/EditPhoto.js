@@ -32,7 +32,7 @@ export default class EditPhoto extends Component {
   }
 
   _editPhoto(e) {
-    e.preventDefault()
+    e.preventDefault();
     UserActions.editPhoto(this.props.id, this.state.url);
     this.setState({url: ''});
     this.closeModal();
@@ -47,7 +47,7 @@ export default class EditPhoto extends Component {
           <Modal.Title>Edit Photo</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <label>New URL: <input type="text" onChange={this.onInputChange}/></label>
+            <label>New URL: <input type="text" onChange={this._onInputChange}/></label>
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this._editPhoto}>Edit</Button>
