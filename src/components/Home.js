@@ -9,10 +9,13 @@ export default class Home extends Component {
     super();
 
     this.state = {
-      albums: AlbumStore.getAll()
+      albums: AlbumStore.getAll(),
+      newAlbumText: ""
     }
 
     this._onChange = this._onChange.bind(this);
+    this._onInputChange = this._onInputChange.bind(this);
+    this._addAlbum = this._addAlbum.bind(this);
   }
 
   componentDidMount() {
@@ -27,6 +30,20 @@ export default class Home extends Component {
   _onChange() {
     this.setState({
       albums: AlbumStore.getAll()
+    })
+  }
+
+  _onInputChange(e) {
+    this.setState({
+      newAlbumText: e.target.value
+    })
+  }
+
+  _addAlbum(e) {
+    e.preventDefault();
+    UserActions.addAlbum(this.state.newAlbumText);
+    this.setState({
+      newAlbumText: ""
     })
   }
 
@@ -46,14 +63,21 @@ export default class Home extends Component {
 
       return (
         <div className="container">
-        <div className="row">
-        <h1>Photo Albums</h1>
-        </div>
-        <div className="row">
-        <div className="container col-sm-12 col-md-12 col-lg-12">
-        {Albums}
-        </div>
-        </div>
+          <div className="row">
+            <h1>Photo Albums</h1>
+          </div>
+          <div className="row">
+            <form onSubmit={this._addAlbum} className="form-group">
+              <h2>Add New Album</h2>
+              <input onChange={this._onInputChange} type="text" className="form-control"/>
+              <button className="btn btn-success">Add</button>
+            </form>
+          </div>
+          <div className="row">
+            <div className="container col-sm-12 col-md-12 col-lg-12">
+              {Albums}
+            </div>
+          </div>
         </div>
       )
 

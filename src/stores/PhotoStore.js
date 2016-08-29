@@ -1,29 +1,35 @@
 import { EventEmitter } from 'events';
 import AppDispatcher from '../AppDispatcher';
 
-let _animals = [];
-let _animal = {};
+let _photos = [];
+let _photo;
 
-class AnimalStore extends EventEmitter {
+class PhotoStore extends EventEmitter {
   constructor() {
     super();
 
     AppDispatcher.register(action => {
       switch(action.type) {
-        case 'RECEIVE_ANIMALS':
-          _animals = action.animals;
+        case 'RECEIVE_PHOTO':
+          _photo = action.photo;
           this.emit('CHANGE');
           break;
-        case 'RECEIVE_ANIMAL':
-          _animal = action.animal;
+        case 'ADD_PHOTO':
+          _photos.push(action.photo);
           this.emit('CHANGE');
           break;
-        case 'ADD_ANIMAL':
-          _animals.push(action.animal);
+        case 'DELETE_PHOTO':
+          _photo = {}
+          let newPhotos = _photos.filter(photo => {
+            if (photo._id === action.id) return false;
+            return true;
+          })
+          _photos = newPhotos;
           this.emit('CHANGE');
           break;
-        case 'REMOVE_ANIMAL':
-          _animal = {};
+        case 'EDIT_PHOTO':
+          let editPhotos = action.photos;
+          _photos = editPhotos;
           this.emit('CHANGE');
           break;
       }
@@ -38,13 +44,9 @@ class AnimalStore extends EventEmitter {
     this.removeListener('CHANGE', cb);
   }
 
-  getAnimals() {
-    return _animals;
-  }
-
-  getAnimal() {
-    return _animal;
+  getPhoto() {
+    return _photo;
   }
 }
 
-export default new AnimalStore();
+export default new PhotoStore();

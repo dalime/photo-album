@@ -2,6 +2,8 @@ import { EventEmitter } from 'events';
 import AppDispatcher from '../AppDispatcher';
 
 let _albums;
+let _albumName;
+let _photos;
 
 class AlbumStore extends EventEmitter {
   constructor() {
@@ -13,21 +15,32 @@ class AlbumStore extends EventEmitter {
           _albums = action.albums;
           this.emit('CHANGE');
           break;
-        // case 'RECEIVE_PERSON':
-        //   _person = action.person;
-        //   this.emit('CHANGE');
-        //   break;
-        // case 'CREATE_PERSON':
-        //   _people.push(action.person);
-        //   this.emit('CHANGE');
-        //   break;
-        // case 'DELETE_PERSON':
-        //   let _newPeople = _people.filter(function(obj) {
-        //     return obj._id !== action.person._id;
-        //   })
-        //   _people = _newPeople;
-        //   this.emit('CHANGE');
-        //   break;
+        case 'RECEIVE_ALBUM':
+          _albumName = action.album.name;
+          let photos = action.album.photos;
+          _photos = photos;
+          this.emit('CHANGE');
+          break;
+        case 'RECEIVE_NEW_ALBUM':
+          _albums.push(action.album);
+          this.emit('CHANGE');
+          break;
+        case 'RECEIVE_DELETE_ALBUM':
+          let newAlbums = _albums.filter(album => {
+            if (album._id === action.album._id) return false;
+            return true;
+          })
+          _albums = newAlbums;
+          this.emit('CHANGE');
+          break;
+        case 'RECEIVE_EDIT_ALBUM':
+          let editAlbums = _albums.filter(album => {
+            if (album._id === action.album._id) return action.album;
+            return album;
+          })
+          _albums = editAlbums;
+          this.emit('CHANGE');
+          break;
       }
     });
   }
@@ -42,6 +55,14 @@ class AlbumStore extends EventEmitter {
 
   getAll() {
     return _albums;
+  }
+
+  getName() {
+    return _albumName;
+  }
+
+  getPhotos() {
+    return _photos;
   }
 }
 
