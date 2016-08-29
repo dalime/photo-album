@@ -43,6 +43,11 @@ class AlbumStore extends EventEmitter {
           _photos = action.albums.photos;
           this.emit('CHANGE');
           break;
+        case 'RECEIVE_EDIT_PHOTOS':
+          let editPhotos = action.photos;
+          _photos = editPhotos;
+          this.emit('CHANGE');
+          break;
       }
     });
   }
