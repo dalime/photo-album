@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
+import { browserHistory } from 'react-router';
+
 import UserActions from '../../actions/UserActions';
 
 export default class EditPhoto extends Component {
@@ -36,6 +38,7 @@ export default class EditPhoto extends Component {
     UserActions.editPhoto(this.props.id, this.state.url);
     this.setState({url: ''});
     this.closeModal();
+    browserHistory.push('/');
   }
 
   render() {
